@@ -1,0 +1,29 @@
+[
+    {
+        "postId": "1",
+        "title": "title for post 1",
+        "comments": [{
+                "postId": "1",
+                "commentId": "1",
+                "title": "title for comment 1"
+            }, {
+                "postId": "1",
+                "commentId": "2",
+                "title": "title for comment 2"
+            }]
+    }
+    ,
+    {
+        "postId": "2",
+        "title": "title for post 2",
+        "comments": [{
+                "postId": "1",
+                "commentId": "1",
+                "title": "title for comment 1"
+            }, {
+                "postId": "1",
+                "commentId": "2",
+                "title": "title for comment 2"
+            }]
+    }
+]

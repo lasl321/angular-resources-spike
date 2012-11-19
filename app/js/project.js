@@ -1,29 +1,37 @@
 angular.module('project', ['mongolab', 'dataAccess']).
-config(function($routeProvider) {
-    $routeProvider.
-    when('/', {
-        controller: ListCtrl,
-        templateUrl: 'app/partials/list.html'
-    }).
-    when('/edit/:projectId', {
-        controller: EditCtrl,
-        templateUrl: 'app/partials/detail.html'
-    }).
-    when('/new', {
-        controller: CreateCtrl,
-        templateUrl: 'app/partials/detail.html'
-    }).
-    when('/post', {
-        controller: PostController,
-        templateUrl: 'app/partials/post.html'
-    }).
-    otherwise({
-        redirectTo: '/'
+    config(function ($routeProvider) {
+        $routeProvider.
+            when('/', {
+                controller: ListCtrl,
+                templateUrl: 'app/partials/list.html'
+            }).
+            when('/edit/:projectId', {
+                controller: EditCtrl,
+                templateUrl: 'app/partials/detail.html'
+            }).
+            when('/new', {
+                controller: CreateCtrl,
+                templateUrl: 'app/partials/detail.html'
+            }).
+            when('/post', {
+                controller: PostController,
+                templateUrl: 'app/partials/post.html'
+            }).
+            otherwise({
+                redirectTo: '/'
+            });
     });
-});
 
 function PostController($scope, Post) {
-    $scope.posts = Post.query();
+    var posts = $scope.posts = Post.query();
+
+    $scope.addComment = function () {
+        var index = 2;
+        console.log(posts[index].comments);
+        posts[index].addComment("title for comment 5");
+
+//        $scope.$digest();
+    };
 }
 
 function ListCtrl($scope, Project) {
@@ -31,8 +39,8 @@ function ListCtrl($scope, Project) {
 }
 
 function CreateCtrl($scope, $location, Project) {
-    $scope.save = function() {
-        Project.save($scope.project, function(project) {
+    $scope.save = function () {
+        Project.save($scope.project, function (project) {
             $location.path('/edit/' + project._id.$oid);
         });
     }
@@ -42,25 +50,25 @@ function EditCtrl($scope, $location, $routeParams, Project) {
     var self = this;
 
     Project.get({
-        id: $routeParams.projectId
-    },
-    function(project) {
-        self.original = project;
-        $scope.project = new Project(self.original);
-    });
+            id: $routeParams.projectId
+        },
+        function (project) {
+            self.original = project;
+            $scope.project = new Project(self.original);
+        });
 
-    $scope.isClean = function() {
+    $scope.isClean = function () {
         return angular.equals(self.original, $scope.project);
-    }
+    };
 
-    $scope.destroy = function() {
-        self.original.destroy(function() {
+    $scope.destroy = function () {
+        self.original.destroy(function () {
             $location.path('/list');
         });
     };
 
-    $scope.save = function() {
-        $scope.project.update(function() {
+    $scope.save = function () {
+        $scope.project.update(function () {
             $location.path('/');
         });
     };
